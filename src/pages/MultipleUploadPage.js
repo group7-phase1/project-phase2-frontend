@@ -1,15 +1,36 @@
 import React, { useState } from 'react';
-
+import axios from 'axios'; // Import Axios
 const MultipleUpload = () => {
-    const [packages, setPackages] = useState([{ name: '', version: '' }]);
+    const [packages, setPackages] = useState([{ name: '', version: '' , file: null}]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         // Handle the group upload/update logic here
-    };
+        for (let i = 0; i < packages.length; i++) {
+            console.log(packages[i]);
+          }
+        try {
+            // Make an Axios POST request to your API endpoint
+            const response = await axios.post('/api_create_package', {
+              packages: packages
+            });
+      
+            if (response.data.success) {
+              // Handle a successful login (e.g., redirect to another page)
+              console.log('Successful upload');
+            } else {
+              // Handle a failed login (e.g., show an error message)
+              console.log('Failed upload');
+            }
+          } catch (error) {
+            // Handle any network or server error
+            console.error('An error occurred:', error);
+          }
+    
+        };
 
     const addPackage = () => {
-        setPackages(prev => [...prev, { name: '', version: '' }]);
+        setPackages(prev => [...prev, { name: '', version: '' , file: null}]);
     };
 
     return (
@@ -53,6 +74,11 @@ const MultipleUpload = () => {
                             <input 
                                 type="file"
                                 id={`file-${idx}`}
+                                onChange={(e) => {
+                                    const newPackages = [...packages];
+                                    newPackages[idx].file = e.target.value;
+                                    setPackages(newPackages);
+                                }}
                                 className="mt-1 p-2 w-full border rounded-md"
                                 required
                             />
