@@ -1,68 +1,56 @@
-// pages/grid.js
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';  // Importing Link to navigate to Update page
 
-const Home = () => {
+const Login = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Handle the login logic here
+    };
+
     return (
-        <div className="m-10">
-            <div className="flex justify-between items-center mb-4">
-                <h1 className="text-2xl font-bold">My packages</h1>
-                <button className="px-4 py-2 bg-gray-800 text-white rounded">Reset</button>
-            </div>
-            <div className="mb-4">
-                <input 
-                    type="text" 
-                    placeholder="Search..."
-                    className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-                />
-            </div>
-            <table className="min-w-full bg-white border rounded">
-                <thead className="bg-gray-200">
-                    <tr>
-                        <th className="py-2 px-4 border-b">Package Name</th>
-                        <th className="py-2 px-4 border-b">Net Score</th>
-                        <th className="py-2 px-4 border-b">Ramp up</th>
-                        <th className="py-2 px-4 border-b">Maintanance</th>
-                        <th className="py-2 px-4 border-b">Newest Version</th>
-                        <th className="py-2 px-4 border-b"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                    <tr className="border-b hover:bg-gray-100">
-                        <td className="py-2 px-4">NodeJS</td>
-                        <td className="py-2 px-4"></td>
-                        <td className="py-2 px-4"></td>
-                        <td className="py-2 px-4"></td>
-                        <td className="py-2 px-4"></td>
-                        <Link to="/package-details" className='py-2 px-4 text-xs bg-blue-500 text-white rounded hover:bg-blue-600'>Details</Link>
-                    </tr>
-                    
-                    <tr className="border-b hover:bg-gray-100">
-                        <td className="py-2 px-4">Example package</td>
-                        <td className="py-2 px-4"></td>
-                        <td className="py-2 px-4"></td>
-                        <td className="py-2 px-4"></td>
-                        <td className="py-2 px-4"></td>
-                        <Link to="/package-details" className='py-2 px-4 text-xs bg-blue-500 text-white rounded hover:bg-blue-600'>Details</Link>
-                    </tr>
-                    <tr className="border-b hover:bg-gray-100">
-                        <td className="py-2 px-4">Example package</td>
-                        <td className="py-2 px-4"></td>
-                        <td className="py-2 px-4"></td>
-                        <td className="py-2 px-4"></td>
-                        <td className="py-2 px-4"></td>
-                        <Link to="/package-details" className='py-2 px-4 text-xs bg-blue-500 text-white rounded hover:bg-blue-600'>Details</Link>
-                    </tr>
-                </tbody>
-            </table>
-            <div className="mt-4">
-                {/* naviagete to /create-package */}
-                {/* <button className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Create package</button> */}
-                <Link to="/create-package" className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Create package</Link>
+        <div className="min-h-screen flex items-center justify-center bg-gray-200">
+            <div className="p-8 bg-white shadow-md rounded-lg">
+                <h1 className="text-2xl font-bold mb-4">Login</h1>
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-4">
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-600">Email:</label>
+                        <input 
+                            type="email"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="mt-1 p-2 w-full border rounded-md"
+                            required
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label htmlFor="password" className="block text-sm font-medium text-gray-600">Password:</label>
+                        <input 
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="mt-1 p-2 w-full border rounded-md"
+                            required
+                        />
+                    </div>
+                    <Link
+                    to="/grid">
+                    <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50">
+                        Login
+                   
+                    </button>
+                    </Link>
+                </form>
+                <div className="mt-4 text-center">
+                    <p>Don't have an account? <a href="/signup" className="text-blue-600 hover:underline">Sign Up</a></p>
+                </div>
             </div>
         </div>
     );
-};
+}
 
-export default Home;
+export default Login;
