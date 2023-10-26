@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import Router from "./Router"; 
+import Router from "../Router"; // Import your Router component
 
 function App() {
   return (
