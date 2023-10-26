@@ -1,20 +1,22 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Grid from "./pages/grid";
-import IndividualPackage from "./pages/individualPackage";
-import Login from "./pages/login";
-import UploadMultiplePackages from "./pages/uploadMultiplePackages";
-import UploadOnePackage from "./pages/uploadOnePackage";
+import Home from "./pages/HomePage";
+import CreatePackage from "./pages/CreatePackagePage";
+import Login from "./pages/LoginPage";
+import MultipleUpload from "./pages/MultipleUploadPage";
+import UpdatePackage from "./pages/UpdatePackagePage";
+import PackageDetail from "./pages/PackageDetailsPage";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Grid />} />
-        <Route path="/individual-package" element={<IndividualPackage />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/create-package" element={<CreatePackage />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/upload-multiple-packages" element={<UploadMultiplePackages />} />
-        <Route path="/upload-one-package" element={<UploadOnePackage />} />
+        <Route path="/multiple-upload" element={<MultipleUpload />} />
+        <Route path="/update-package" element={<UpdatePackage />} />
+        <Route path="/package-details" element={<PackageDetail />} />
       </Routes>
     </BrowserRouter>
   );
