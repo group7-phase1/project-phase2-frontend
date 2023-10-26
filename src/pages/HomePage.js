@@ -24,15 +24,27 @@ const Home = () => {
                         <th className="py-2 px-4 border-b">Ramp up</th>
                         <th className="py-2 px-4 border-b">Maintanance</th>
                         <th className="py-2 px-4 border-b">Newest Version</th>
+                        <th className="py-2 px-4 border-b"></th>
                     </tr>
                 </thead>
                 <tbody>
+                    
                     <tr className="border-b hover:bg-gray-100">
                         <td className="py-2 px-4">NodeJS</td>
                         <td className="py-2 px-4"></td>
                         <td className="py-2 px-4"></td>
                         <td className="py-2 px-4"></td>
                         <td className="py-2 px-4"></td>
+                        <Link to="/package-details" className='py-2 px-4 text-xs bg-blue-500 text-white rounded hover:bg-blue-600'>Details</Link>
+                    </tr>
+                    
+                    <tr className="border-b hover:bg-gray-100">
+                        <td className="py-2 px-4">Example package</td>
+                        <td className="py-2 px-4"></td>
+                        <td className="py-2 px-4"></td>
+                        <td className="py-2 px-4"></td>
+                        <td className="py-2 px-4"></td>
+                        <Link to="/package-details" className='py-2 px-4 text-xs bg-blue-500 text-white rounded hover:bg-blue-600'>Details</Link>
                     </tr>
                     <tr className="border-b hover:bg-gray-100">
                         <td className="py-2 px-4">Example package</td>
@@ -40,13 +52,7 @@ const Home = () => {
                         <td className="py-2 px-4"></td>
                         <td className="py-2 px-4"></td>
                         <td className="py-2 px-4"></td>
-                    </tr>
-                    <tr className="border-b hover:bg-gray-100">
-                        <td className="py-2 px-4">Example package</td>
-                        <td className="py-2 px-4"></td>
-                        <td className="py-2 px-4"></td>
-                        <td className="py-2 px-4"></td>
-                        <td className="py-2 px-4"></td>
+                        <Link to="/package-details" className='py-2 px-4 text-xs bg-blue-500 text-white rounded hover:bg-blue-600'>Details</Link>
                     </tr>
                 </tbody>
             </table>
