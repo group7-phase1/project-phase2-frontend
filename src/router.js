@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Grid from "../pages/grid";
-import IndividualPackage from "../pages/individualPackage";
-import Login from "../pages/Login";
-import UploadMultiplePackages from "../pages/uploadMultiplePackages";
-import UploadOnePackage from "../pages/uploadOnePackage";
+import Grid from "./pages/grid";
+import IndividualPackage from "./pages/individualPackage";
+import Login from "./pages/Login";
+import UploadMultiplePackages from "./pages/uploadMultiplePackages";
+import UploadOnePackage from "./pages/uploadOnePackage";
 
 const Router = () => {
   return (
