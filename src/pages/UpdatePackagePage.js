@@ -58,7 +58,9 @@ const UpdatePackage = () => {
           type="file"
           onChange={handleFileChange}
           className="w-full p-2 border rounded focus:outline-none focus:border-blue-500 mb-4"
+          accept=".zip"
         />
+
         <button
           onClick={handleSubmit}
           className="w-full mb-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
