@@ -6,6 +6,8 @@ import MultipleUpload from "./pages/MultipleUploadPage";
 import UpdatePackage from "./pages/UpdatePackagePage";
 import PackageDetail from "./pages/PackageDetailsPage";
 import Grid from "./pages/Grid";
+import SignUp from "./pages/SignUp";
+import Settings from "./pages/Settings";
 
 const Router = () => {
   return (
@@ -17,6 +19,8 @@ const Router = () => {
         <Route path="/multiple-upload" element={<MultipleUpload />} />
         <Route path="/update-package" element={<UpdatePackage />} />
         <Route path="/package-details" element={<PackageDetail />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
     </BrowserRouter>
   );

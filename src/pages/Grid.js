@@ -29,6 +29,7 @@ const Home = () => {
     };
 
     return (
+        
         <div className="m-10">
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-2xl font-bold">My packages</h1>
@@ -70,6 +71,9 @@ const Home = () => {
             <div className="mt-4">
                 <Link to="/create-package" className="w-full px-4 py-2 bg-blue-500 text-white rounded hover-bg-blue-600">Create package</Link>
             </div>
+            <div style={{ position: 'absolute', top: '0', right: '0' }}>
+      <Link to="/settings" className="ml-4 px-4 py-2 bg-gray-800 text-white rounded">Settings</Link>
+    </div>
         </div>
     );
 };
