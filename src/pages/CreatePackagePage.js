@@ -73,6 +73,7 @@ const CreatePackage = () => {
                         }
                         // Capture the selected file
                         className="mt-1 p-2 w-full border rounded-md"
+                        accept=".zip"
                         required
                     />
                 </div>
