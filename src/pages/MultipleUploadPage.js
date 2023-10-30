@@ -92,7 +92,7 @@ const MultipleUpload = () => {
             </div>
             <div className="mb-2">
               <label htmlFor={`isSecret-${idx}`} className="block text-sm font-medium text-gray-600">
-                Secret? (Only members of your group will be able to see)
+                Secret? (Only you will be able to see)
               </label>
               <input
                 type="checkbox"
