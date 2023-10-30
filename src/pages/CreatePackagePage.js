@@ -90,7 +90,7 @@ const CreatePackage = () => {
               onChange={() => setIsSecret(!isSecret)}
               className="mr-2"
             />
-            Secret? (Only members of your group will be able to see)
+            Secret? (Only members you will be able to see)
           </label>
         </div>
 
