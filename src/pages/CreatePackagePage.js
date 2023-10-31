@@ -23,6 +23,7 @@ const CreatePackage = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
+      
 
       if (response.data.success) {
         // Handle a successful upload (e.g., redirect to another page)
