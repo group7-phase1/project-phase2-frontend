@@ -12,12 +12,12 @@ const SignUp = () => {
 
     try {
       // Make an Axios POST request to your API endpoint
-      const response = await axios.post('/api_login', {
+      const response = await axios.post('http://18.223.123.98:3000/api_login', {
         username: email, // Use the name that matches your API's request body
         password: password,
-        admin: isAdmin,
-        groupName: groupName, // Include the group name in the request
       });
+
+      console.log(response);
 
       if (response.data.success) {
         // Handle a successful login (e.g., redirect to another page)
