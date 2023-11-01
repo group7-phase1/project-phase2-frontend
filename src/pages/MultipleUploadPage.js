@@ -6,28 +6,37 @@ const MultipleUpload = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle the group upload/update logic here
-    for (let i = 0; i < packages.length; i++) {
-      console.log(packages[i]);
-    }
     try {
-      // Make an Axios POST request to your API endpoint
-      const response = await axios.post('/api_create_package', {
-        packages: packages
-      });
-
-      if (response.data.success) {
-        // Handle a successful upload (e.g., redirect to another page)
-        console.log('Successful upload');
-      } else {
-        // Handle a failed upload (e.g., show an error message)
-        console.log('Failed upload');
+      for (let i = 0; i < packages.length; i++) {
+        const packageData = packages[i];
+        // Send an individual request for each package
+        const response = await sendPackage(packageData);
+        
+        if (response.data.success) {
+          // Handle a successful upload (e.g., display a success message)
+          console.log(`Package ${i + 1} uploaded successfully`);
+        } else {
+          // Handle a failed upload (e.g., display an error message)
+          console.error(`Package ${i + 1} upload failed`);
+        }
       }
     } catch (error) {
       // Handle any network or server error
       console.error('An error occurred:', error);
     }
   };
+  
+  const sendPackage = async (packageData) => {
+    try {
+      // Make an Axios POST request to your API endpoint for each package
+      const response = await axios.post('/api_upload', packageData);
+      return response;
+    } catch (error) {
+      // Handle any network or server error
+      return { data: { success: false, message: 'An error occurred.' } };
+    }
+  };
+  
 
   const addPackage = () => {
     setPackages((prev) => [...prev, { name: '', version: '', file: null, isSecret: false }]);

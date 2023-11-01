@@ -1,15 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios'; // Add this line to import Axios
 
-const Home = () => {
+const Home = async () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredData, setFilteredData] = useState([]);
-    
+    //const packageFamilyID = 1; // Declare and assign a value
+
     const data = [
         { name: 'NodeJS', netScore: 0, rampUp: 0, maintenance: 0, newestVersion: '' },
         { name: 'Example package 1', netScore: 0, rampUp: 0, maintenance: 0, newestVersion: '' },
         { name: 'Example package 2', netScore: 0, rampUp: 0, maintenance: 0, newestVersion: '' },
     ];
+
+    try {
+        // Get the packageFamilyID from an input field or variable
+        const packageFamilyID = 'your_package_family_id_value'; // Replace with your value
+    
+        // Make an Axios POST request to your API endpoint
+        const response = await axios.post('/api_get_packages', {
+            packageFamilyID: packageFamilyID
+        });
+    
+        if (response.data.success) {
+            // Handle a successful login (e.g., redirect to another page)
+            console.log('Login successful');
+        } else {
+            // Handle a failed login (e.g., show an error message)
+            console.log('Login failed');
+        }
+    } catch (error) {
+        // Handle any network or server error
+        console.error('An error occurred:', error);
+    }
+    
 
     useEffect(() => {
         filterData('');
