@@ -1,7 +1,7 @@
 // pages/PackageDetails.js
 import React from 'react';
 import { Link } from 'react-router-dom';  // Importing Link to navigate to Update page
-
+import axios from 'axios'; // Add this line to import Axios
 const PackageDetails = ({ 
     packageName = "NodeJS package", 
     description = "Package Description",

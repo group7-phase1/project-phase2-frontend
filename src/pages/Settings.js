@@ -1,11 +1,31 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import axios from 'axios'; // Add this line to import Axios
 function Settings() {
   const [isConfirmationVisible, setConfirmationVisible] = useState(false);
+  const [email, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const handleDeleteAccount = async () => {
+    
+    try {
+      // Make an Axios POST request to your API endpoint
+      const response = await axios.post('/api_reset', {
+        username: email, // Use the name that matches your API's request body
+        password: password,
+      });
 
-  const handleDeleteAccount = () => {
-    setConfirmationVisible(true);
+      if (response.data.success) {
+        // Handle a successful login (e.g., redirect to another page)
+        console.log('Account Deleted successfully');
+        setConfirmationVisible(true);
+      } else {
+        // Handle a failed login (e.g., show an error message)
+        console.log('Deleting Account failed');
+      }
+    } catch (error) {
+      // Handle any network or server error
+      console.error('An error occurred:', error);
+    }
   };
 
   const confirmDeleteAccount = () => {
@@ -37,11 +57,24 @@ function Settings() {
             <button onClick={cancelDeleteAccount} className="px-4 py-2 bg-gray-800 text-white rounded">Cancel</button>
           </div>
         ) : (
-          <button onClick={handleDeleteAccount} className="px-4 py-2 bg-red-500 text-white rounded">Delete Account</button>
+          <div>
+            <input
+              type="text"
+              placeholder="Username"
+              value={email}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button onClick={handleDeleteAccount} className="px-4 py-2 bg-red-500 text-white rounded">Delete Account</button>
+          </div>
         )}
       </div>
     </div>
   );
 }
-
 export default Settings;
