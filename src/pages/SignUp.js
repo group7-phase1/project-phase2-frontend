@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Import Axios
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
   const [groupName, setGroupName] = useState(''); // Add state for group name
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -18,6 +19,7 @@ const SignUp = () => {
 
       if (response.data.success) {
         console.log('Registration successful');
+        navigate('/login');
         // Optionally, redirect to the login page or show a success message
       } else {
         console.log('Registration failed');
