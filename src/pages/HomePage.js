@@ -1,86 +1,83 @@
-import React, { useState } from 'react';
-import axios from 'axios'; // Import Axios
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isAdmin, setIsAdmin] = useState(false);
+const Home = () => {
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredData, setFilteredData] = useState([]);
+    
+    const data = [
+        { name: 'NodeJS', netScore: 0, rampUp: 0, maintenance: 0, newestVersion: '' },
+        { name: 'Example package 1', netScore: 0, rampUp: 0, maintenance: 0, newestVersion: '' },
+        { name: 'Example package 2', netScore: 0, rampUp: 0, maintenance: 0, newestVersion: '' },
+    ];
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    useEffect(() => {
+        filterData('');
+    }, []);
 
-    try {
-      // Make an Axios POST request to your API endpoint
-      const response = await axios.post('/api_login', {
-        username: email, // Use the name that matches your API's request body
-        password: password,
-        admin: isAdmin
-      });
+    const filterData = (query) => {
+        const filtered = data.filter(item =>
+            item.name.toLowerCase().includes(query.toLowerCase())
+        );
+        setFilteredData(filtered);
+    };
 
-      if (response.data.success) {
-        // Handle a successful login (e.g., redirect to another page)
-        console.log('Login successful');
-      } else {
-        // Handle a failed login (e.g., show an error message)
-        console.log('Login failed');
-      }
-    } catch (error) {
-      // Handle any network or server error
-      console.error('An error occurred:', error);
-    }
-  };
+    const handleSearchInput = (e) => {
+        const query = e.target.value;
+        setSearchQuery(query);
+        filterData(query);
+    };
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-200">
-      <div className="p-8 bg-white shadow-md rounded-lg">
-        <h1 className="text-2xl font-bold mb-4">Login</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-600">Email:</label>
-            <input 
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 p-2 w-full border rounded-md"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-600">Password:</label>
-            <input 
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 p-2 w-full border rounded-md"
-              required
-            />
-          </div>
-          <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50">
-            Login
-          </button>
-          <div className="mt-4">
-          {/* Checkbox for admin mode */}
-          <label className="block text-sm font-medium text-gray-600">
-            <input
-              type="checkbox"
-              checked={isAdmin}
-              onChange={() => setIsAdmin(!isAdmin)}
-              className="mr-2"
-            />
-            Admin Mode
-          </label>
-        </div>
-        </form>
-        <div className="mt-4 text-center">
-          <p>Don't have an account? <a href="/signup" className="text-blue-600 hover:underline">Sign Up</a></p>
-        </div>
-      
-      </div>
-
+    return (
+        
+        <div className="m-10">
+            <div className="flex justify-between items-center mb-4">
+                <h1 className="text-2xl font-bold">My packages</h1>
+                <button className="px-4 py-2 bg-gray-800 text-white rounded">Reset</button>
+            </div>
+            <div className="mb-4">
+                <input
+                    type="text"
+                    placeholder="Search..."
+                    className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+                    value={searchQuery}
+                    onChange={handleSearchInput}
+                />
+            </div>
+            <table className="min-w-full bg-white border rounded">
+                <thead className="bg-gray-200">
+                    <tr>
+                        <th className="py-2 px-4 border-b">Package Name</th>
+                        <th className="py-2 px-4 border-b">Net Score</th>
+                        <th className="py-2 px-4 border-b">Ramp up</th>
+                        <th className="py-2 px-4 border-b">Maintenance</th>
+                        <th className="py-2 px-4 border-b">Newest Version</th>
+                        <th className="py-2 px-4 border-b"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {filteredData.map((item, index) => (
+                        <tr key={index} className="border-b hover:bg-gray-100">
+                            <td className="py-2 px-4">{item.name}</td>
+                            <td className="py-2 px-4">{item.netScore}</td>
+                            <td className="py-2 px-4">{item.rampUp}</td>
+                            <td className="py-2 px-4">{item.maintenance}</td>
+                            <td className="py-2 px-4">{item.newestVersion}</td>
+                            <Link to="/package-details" className='py-2 px-4 text-xs bg-blue-500 text-white rounded hover:bg-blue-600'>Details</Link>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <div className="mt-4">
+                <Link to="/multiple-upload" className="w-full px-4 py-2 bg-blue-500 text-white rounded hover-bg-blue-600">Create package</Link>
+            </div>
+            <div style={{ position: 'absolute', top: '0', right: '0' }}>
+      <Link to="/settings" className="ml-4 px-4 py-2 bg-gray-800 text-white rounded">Settings</Link>
     </div>
-  );
+        </div>
+    );
 };
 
-export default Login;
+export default Home;
+
+

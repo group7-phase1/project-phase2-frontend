@@ -5,7 +5,7 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
-  const [groupName, setGroupName] = useState('');
+  const [groupName, setGroupName] = useState(''); // Add state for group name
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,17 +13,14 @@ const SignUp = () => {
     try {
       const response = await axios.post('/api_register', {
         username: email,
-        password: password,
-        admin: isAdmin,
-        groupName: groupName,
+        password: password
       });
 
-      console.log(response.data);
-
       if (response.data.success) {
-        console.log('Signup successful');
+        console.log('Registration successful');
+        // Optionally, redirect to the login page or show a success message
       } else {
-        console.log('Signup failed');
+        console.log('Registration failed');
       }
     } catch (error) {
       console.error('An error occurred:', error);

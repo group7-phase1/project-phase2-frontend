@@ -8,13 +8,14 @@ import PackageDetail from "./pages/PackageDetailsPage";
 import Grid from "./pages/Grid";
 import SignUp from "./pages/SignUp";
 import Settings from "./pages/Settings";
+import { PrivateRoute } from "./privateRouter";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/grid" element={<Grid />} />
+        <PrivateRoute path="/grid" element={<Grid />} />
         <Route path="/create-package" element={<CreatePackage />} />
         <Route path="/multiple-upload" element={<MultipleUpload />} />
         <Route path="/update-package" element={<UpdatePackage />} />
