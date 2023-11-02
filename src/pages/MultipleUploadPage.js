@@ -2,21 +2,18 @@ import React, { useState } from 'react';
 import axios from 'axios'; // Import Axios
 
 const MultipleUpload = () => {
-  const [packages, setPackages] = useState([{ name: '', version: '', file: null, isSecret: false }]);
+  const [packages, setPackages] = useState([{ name: '', version: '', file: null, isSecret: false, userID: 1 }]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       for (let i = 0; i < packages.length; i++) {
         const packageData = packages[i];
-        // Send an individual request for each package
         const response = await sendPackage(packageData);
-        
         if (response.data.success) {
-          // Handle a successful upload (e.g., display a success message)
+         
           console.log(`Package ${i + 1} uploaded successfully`);
         } else {
-          // Handle a failed upload (e.g., display an error message)
           console.error(`Package ${i + 1} upload failed`);
         }
       }

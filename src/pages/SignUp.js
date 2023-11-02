@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Import Axios
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate, Redirect } from 'react-router-dom'; // Import useNavigate
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -14,12 +14,13 @@ const SignUp = () => {
     try {
       const response = await axios.post('/api_register', {
         username: email,
-        password: password
+        password: password,
+        admin: isAdmin
       });
 
       if (response.data.success) {
         console.log('Registration successful');
-        navigate('/login');
+        // navigate('/login');
         // Optionally, redirect to the login page or show a success message
       } else {
         console.log('Registration failed');
