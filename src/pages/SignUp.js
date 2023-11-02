@@ -1,29 +1,28 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Import Axios
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
-  const [groupName, setGroupName] = useState('');
-
+  const [groupName, setGroupName] = useState(''); // Add state for group name
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await axios.post('/api_register', {
         username: email,
-        password: password,
-        admin: isAdmin,
-        groupName: groupName,
+        password: password
       });
 
-      console.log(response.data);
-
       if (response.data.success) {
-        console.log('Signup successful');
+        console.log('Registration successful');
+        navigate('/login');
+        // Optionally, redirect to the login page or show a success message
       } else {
-        console.log('Signup failed');
+        console.log('Registration failed');
       }
     } catch (error) {
       console.error('An error occurred:', error);
