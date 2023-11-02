@@ -11,23 +11,18 @@ const SignUp = () => {
     e.preventDefault();
 
     try {
-      // Make an Axios POST request to your API endpoint
-      const response = await axios.post('http://18.223.123.98:3000/api_login', {
-        username: email, // Use the name that matches your API's request body
-        password: password,
+      const response = await axios.post('/api_register', {
+        username: email,
+        password: password
       });
 
-      console.log(response);
-
       if (response.data.success) {
-        // Handle a successful login (e.g., redirect to another page)
-        console.log('Login successful');
+        console.log('Registration successful');
+        // Optionally, redirect to the login page or show a success message
       } else {
-        // Handle a failed login (e.g., show an error message)
-        console.log('Login failed');
+        console.log('Registration failed');
       }
     } catch (error) {
-      // Handle any network or server error
       console.error('An error occurred:', error);
     }
   };
