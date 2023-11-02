@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios'; // Import Axios
+import { fireEvent } from "@testing-library/react";
 
 const UpdatePackage = () => {
   const [version, setVersion] = useState("");
@@ -14,11 +15,11 @@ const UpdatePackage = () => {
   const handleSubmit = async () => {
     try {
       const response = await axios.post('/api_update_packages', {
-        packageFamilyName: null,
-        version: version,
-        zipFile: file,
+        file: file, 
         zipFileName: file.name,
-        userID: null,
+        userId: 1,
+        packageFamilyName: "NodeJS",
+        version: version
       });
 
       console.log(response.data);
@@ -73,7 +74,6 @@ const UpdatePackage = () => {
         <ul className="bg-gray-100 p-4 rounded">
           <li className="mb-2">1.10</li>
           <li>2.10</li>
-          {/* Add more versions as needed */}
         </ul>
       </div>
     </div>
