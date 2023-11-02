@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios'; // Import Axios
+
 const UpdatePackage = () => {
   const [version, setVersion] = useState("");
   const [file, setFile] = useState(null);
@@ -11,31 +12,25 @@ const UpdatePackage = () => {
   };
 
   const handleSubmit = async () => {
-    if (version && file) {
-      // TODO: Upload logic here
-      console.log("Version:", version);
-      console.log("File:", file);
-    }
-
     try {
-      // Make an Axios POST request to your API endpoint
-      const response = await axios.post('/api_update_package', {
+      const response = await axios.post('/api_update_packages', {
+        packageFamilyName: null,
         version: version,
-        file: file
+        zipFile: file,
+        zipFileName: file.name,
+        userID: null,
       });
 
+      console.log(response.data);
+
       if (response.data.success) {
-        // Handle a successful login (e.g., redirect to another page)
-        console.log('Successful upload');
+        console.log('Package update successful');
       } else {
-        // Handle a failed login (e.g., show an error message)
-        console.log('Failed upload');
+        console.log('Package update failed');
       }
     } catch (error) {
-      // Handle any network or server error
       console.error('An error occurred:', error);
     }
-
   };
 
   return (

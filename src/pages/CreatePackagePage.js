@@ -11,29 +11,23 @@ const CreatePackage = () => {
     e.preventDefault();
 
     try {
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('version', version);
-      formData.append('file', file);
-      formData.append('isSecret', isSecret); // Include the isSecret value
-
-      // Make an Axios POST request to your API endpoint
-      const response = await axios.post('/api_create_package', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      const response = await axios.post('/api_create', {
+        packageFamilyName: name,
+        version: version,
+        zipFile: file,
+        zipFileName: file.name,
+        secret: isSecret,
+        userID: null,
       });
-      
+
+      console.log(response.data);
 
       if (response.data.success) {
-        // Handle a successful upload (e.g., redirect to another page)
-        console.log('Successful upload');
+        console.log('Package creation successful');
       } else {
-        // Handle a failed upload (e.g., show an error message)
-        console.log('Failed upload');
+        console.log('Package creation failed');
       }
     } catch (error) {
-      // Handle any network or server error
       console.error('An error occurred:', error);
     }
   };
