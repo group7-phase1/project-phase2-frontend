@@ -1,30 +1,36 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Import Axios
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate, Redirect, Link } from 'react-router-dom'; // Import useNavigate
 
 const SignUp = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
   const [groupName, setGroupName] = useState(''); // Add state for group name
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("in handlesubmit")
 
     try {
       const response = await axios.post('/api_register', {
-        username: email,
-        password: password
+        username: username,
+        password: password,
+        admin: isAdmin
       });
+      console.log(response.status)
 
       if (response.data.success) {
         console.log('Registration successful');
+        alert("Registration successful")
         navigate('/login');
         // Optionally, redirect to the login page or show a success message
       } else {
+        alert("Registration failed: " + response.data.message)
         console.log('Registration failed');
       }
     } catch (error) {
+      alert("Registration failed: " + error)
       console.error('An error occurred:', error);
     }
   };
@@ -35,14 +41,14 @@ const SignUp = () => {
         <h1 className="text-2xl font-bold mb-4">Sign Up</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-600">
-              Email:
+            <label htmlFor="username" className="block text-sm font-medium text-gray-600">
+              Username:
             </label>
             <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="mt-1 p-2 w-full border rounded-md"
               required
             />
@@ -93,7 +99,8 @@ const SignUp = () => {
         </form>
         <div className="mt-4 text-center">
           <p>
-            Already have an account? <a href="/" className="text-blue-600 hover:underline">Login</a>
+            
+            Already have an account? <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
           </p>
         </div>
       </div>

@@ -1,40 +1,52 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CreatePackage = () => {
-  const [name, setName] = useState('');
-  const [version, setVersion] = useState('');
+  const [name, setName] = useState("");
+  const [version, setVersion] = useState("");
   const [file, setFile] = useState(null);
   const [isSecret, setIsSecret] = useState(false); // Initialize isSecret as false
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+
+    // Create an instance of FormData
+    const formData = new FormData();
+    formData.append("packageFamilyName", name);
+    formData.append("version", version);
+    formData.append("zipFile", file);
+    formData.append("zipFileName", file.name);
+    formData.append("secret", isSecret);
 
     try {
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('version', version);
-      formData.append('file', file);
-      formData.append('isSecret', isSecret); // Include the isSecret value
-
-      // Make an Axios POST request to your API endpoint
-      const response = await axios.post('/api_create_package', formData, {
+      const token = sessionStorage.getItem("authToken");
+      console.log("token: " + token);
+      // console.log("token: " + token)
+      const response = await axios.post("/api_create", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
       });
-      
+
+      // console.log(response.data);
 
       if (response.data.success) {
-        // Handle a successful upload (e.g., redirect to another page)
-        console.log('Successful upload');
+        alert("Package creation successful");
+        console.log("Package creation successful");
+        navigate("/");
       } else {
-        // Handle a failed upload (e.g., show an error message)
-        console.log('Failed upload');
+        alert("Package creation failed: " + response.data.message);
+        console.log("Package creation failed", response.data.message);
       }
     } catch (error) {
-      // Handle any network or server error
-      console.error('An error occurred:', error);
+      alert("Package creation failed: " + error);
+      console.error(
+        "An error occurred:",
+        error.response ? error.response.data : error
+      );
     }
   };
 
@@ -44,7 +56,10 @@ const CreatePackage = () => {
       <p>Fill in information to upload the initial package.</p>
       <form onSubmit={handleSubmit} className="mt-4">
         <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-600"
+          >
             Name:
           </label>
           <input
@@ -57,7 +72,10 @@ const CreatePackage = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="version" className="block text-sm font-medium text-gray-600">
+          <label
+            htmlFor="version"
+            className="block text-sm font-medium text-gray-600"
+          >
             Version:
           </label>
           <input
@@ -70,7 +88,10 @@ const CreatePackage = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="file" className="block text-sm font-medium text-gray-600">
+          <label
+            htmlFor="file"
+            className="block text-sm font-medium text-gray-600"
+          >
             Choose zipped file:
           </label>
           <input

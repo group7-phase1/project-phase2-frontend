@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Import Axios
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,15 +22,19 @@ const Login = () => {
       if (response.data.success) {
         // Store the token securely
         sessionStorage.setItem('authToken', response.data.token);
+        alert("Login successful")
         console.log('Login successful');
+        navigate('/');
+        
         // Optionally, redirect to another page or set a global auth state here
       } else {
+          alert("Login failed: " + response.data.message)
           console.log('Login failed');
       }
     
     } catch (error) {
       // Handle any network or server error
-      console.error('An error occurred:', error);
+      console.error('An error occurred:' + error);
     }
   };
 
@@ -38,9 +44,9 @@ const Login = () => {
         <h1 className="text-2xl font-bold mb-4">Login</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-600">Email:</label>
+            <label htmlFor="text" className="block text-sm font-medium text-gray-600">Email:</label>
             <input 
-              type="email"
+              type="text"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
