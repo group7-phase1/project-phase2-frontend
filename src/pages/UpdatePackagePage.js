@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios'; // Import Axios
+import { fireEvent } from "@testing-library/react";
+
 const UpdatePackage = () => {
   const [version, setVersion] = useState("");
   const [file, setFile] = useState(null);
@@ -11,31 +13,25 @@ const UpdatePackage = () => {
   };
 
   const handleSubmit = async () => {
-    if (version && file) {
-      // TODO: Upload logic here
-      console.log("Version:", version);
-      console.log("File:", file);
-    }
-
     try {
-      // Make an Axios POST request to your API endpoint
-      const response = await axios.post('/api_update_package', {
-        version: version,
-        file: file
+      const response = await axios.post('/api_update_packages', {
+        file: file, 
+        zipFileName: file.name,
+        userId: 1,
+        packageFamilyName: "NodeJS",
+        version: version
       });
 
+      console.log(response.data);
+
       if (response.data.success) {
-        // Handle a successful login (e.g., redirect to another page)
-        console.log('Successful upload');
+        console.log('Package update successful');
       } else {
-        // Handle a failed login (e.g., show an error message)
-        console.log('Failed upload');
+        console.log('Package update failed');
       }
     } catch (error) {
-      // Handle any network or server error
       console.error('An error occurred:', error);
     }
-
   };
 
   return (
@@ -78,7 +74,6 @@ const UpdatePackage = () => {
         <ul className="bg-gray-100 p-4 rounded">
           <li className="mb-2">1.10</li>
           <li>2.10</li>
-          {/* Add more versions as needed */}
         </ul>
       </div>
     </div>

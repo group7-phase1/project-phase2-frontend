@@ -47,6 +47,7 @@ const CreatePackage = () => {
         "An error occurred:",
         error.response ? error.response.data : error
       );
+
     }
   };
 

@@ -7,6 +7,7 @@ import UpdatePackage from "./pages/UpdatePackagePage";
 import PackageDetail from "./pages/PackageDetailsPage";
 import SignUp from "./pages/SignUp";
 import Settings from "./pages/Settings";
+
 import Login from "./pages/LoginPage";
 import Logout from './pages/LogoutPage';
 
@@ -16,6 +17,7 @@ const PrivateRoute = ({ children }) => {
   console.log("in private route")
   return authToken ? children : <Navigate to="/login" replace />;
 };
+
 
 const Router = () => {
   return (
