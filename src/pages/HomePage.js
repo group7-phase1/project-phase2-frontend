@@ -34,17 +34,17 @@ const Home = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const filtered = packageFamilies.filter((item) =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredData(filtered);
-  }, [searchQuery, packageFamilies]); // Dependencies
+  // useEffect(() => {
+  //   const filtered = packageFamilies.filter((item) =>
+  //     item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  //   );
+  //   setFilteredData(filtered);
+  // }, [searchQuery, packageFamilies]); // Dependencies
 
-  const handleSearchInput = (e) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-  };
+  // const handleSearchInput = (e) => {
+  //   const query = e.target.value;
+  //   setSearchQuery(query);
+  // };
 
   return (
     <div className="m-10">
