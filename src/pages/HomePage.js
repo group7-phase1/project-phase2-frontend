@@ -68,7 +68,7 @@ const Home = () => {
           placeholder="Search..."
           className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
           value={searchQuery}
-          onChange={handleSearchInput}
+          // onChange={handleSearchInput}
         />
       </div>
       <table className="min-w-full bg-white border rounded">
