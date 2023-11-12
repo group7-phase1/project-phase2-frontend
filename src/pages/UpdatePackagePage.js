@@ -17,9 +17,10 @@ const UpdatePackage = () => {
       const response = await axios.post('/api_update_packages', {
         file: file, 
         zipFileName: file.name,
-        userId: 1,
-        packageFamilyName: "NodeJS",
-        version: version
+        userId: 11,
+        packageFamilyName: file.name,
+        version: version,
+        packageFamilyID: 6
       });
 
       console.log(response.data);
