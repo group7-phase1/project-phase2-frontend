@@ -1,11 +1,16 @@
 // pages/PackageDetails.js
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';  // Importing Link to navigate to Update page
+import { Link, useParams } from 'react-router-dom';  // Importing Link to navigate to Update page
 import axios from 'axios'; // Add this line to import Axios
 const PackageDetails = () => {
     //const [packageName, setPackageName] = useState('');
     //const [packageDescription, setPackageDescription] = useState('');
     const [packages, setPackages] = useState([]);
+    const [familyName, setFamilyName] = useState([]);
+    // const location = useLocation();
+    // const { state } = location;
+    // const packageFamilyName = state?.packageFamilyName;
+    let { packageFamilyId } = useParams();
     //const token = sessionStorage.getItem("authToken"), 
     // const packageName = "NodeJS package", 
     // const description = "Package Description",
@@ -18,7 +23,7 @@ const PackageDetails = () => {
           try {
             const result = await axios.post(
               "/api_get_package_details",
-              {data: { packageFamilyID: send }},
+              {data: { packageFamilyID: packageFamilyId }},
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -26,10 +31,27 @@ const PackageDetails = () => {
                 },
               }
             );
-            console.log(result);
             const data = await result.data.packages;
-            console.log(data);
             setPackages(data);
+            
+          } catch (error) {
+            console.error("An error occurred:", error.response);
+          }
+
+          try {
+            const result2 = await axios.post(
+              "/api_get_package_family_name",
+              {data: { packageFamilyID: packageFamilyId }},
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+  
+            const data2 = await result2.data.packages;
+            setFamilyName(data2);
             
           } catch (error) {
             console.error("An error occurred:", error.response);
@@ -40,11 +62,15 @@ const PackageDetails = () => {
       useEffect(() => {
         console.log("Packages: ", packages);
       }, [packages]);
+      
+      useEffect(() => {
+        console.log("Family Name: ", familyName);
+      }, [familyName]);
 
     return (
         <div className="m-10 flex">
             <div className="flex-1 pr-5">
-                <h1 className="text-2xl font-bold mb-4"> {packages.length > 0 ? packages[0].package_name : 'Loading...'}</h1>
+                <h1 className="text-2xl font-bold mb-4"> {familyName.length > 0 ? familyName[0].package_family_name : 'Loading...'}</h1>
                 <p className="mb-6">{"description"}</p>
 
                 <h2 className="text-xl font-bold mb-4">Ratings</h2>
