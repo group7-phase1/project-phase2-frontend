@@ -27,6 +27,8 @@ const Home = () => {
         const data = await result.data.packageFamilies;
         setPackageFamilies(data);
         setFilteredData(data);
+        console.log("Data", data);
+        
       } catch (error) {
         console.error("An error occurred:", error.response);
       }
@@ -97,9 +99,8 @@ const Home = () => {
                 <td className="py-2 px-4">{item.newestVersion}</td>
                 <td className="py-2 px-4">
                   <Link
-                    to="/package-details"
-                    className="text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
-                    style={{ display: "block", padding: "8px" }}
+                    to={`/package-details/${item.package_family_id}`}
+                    className="w-full px-4 py-2 bg-blue-500 text-white rounded hover-bg-blue-600"
                   >
                     Details
                   </Link>
