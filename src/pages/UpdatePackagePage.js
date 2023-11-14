@@ -1,44 +1,140 @@
 // pages/uploadOnePackage.js
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from 'axios'; // Import Axios
 import { fireEvent } from "@testing-library/react";
 
 const UpdatePackage = () => {
+  //const [name, setName] = useState("");
   const [version, setVersion] = useState("");
   const [file, setFile] = useState(null);
-
+  const [isSecret, setIsSecret] = useState(false); // Initialize isSecret as false
+  const navigate = useNavigate();
+  const [packages, setPackages] = useState([]);
+  const [familyName, setFamilyName] = useState([]);
+  let { packageFamilyId } = useParams();
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
 
-  const handleSubmit = async () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = sessionStorage.getItem("authToken");
+      try {
+        const result = await axios.post(
+          "/api_get_package_details",
+          {data: { packageFamilyID: packageFamilyId }},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data = await result.data.packages;
+        setPackages(data);
+        
+      } catch (error) {
+        console.error("An error occurred:", error.response);
+      }
+
+      try {
+        const result2 = await axios.post(
+          "/api_get_package_family_name",
+          {data: { packageFamilyID: packageFamilyId }},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data2 = await result2.data.packages;
+        setFamilyName(data2);
+        
+      } catch (error) {
+        console.error("An error occurred:", error.response);
+      }
+    };
+    fetchData();
+  }, []);
+  useEffect(() => {
+    console.log("Packages: ", packages);
+  }, [packages]);
+  
+  useEffect(() => {
+    console.log("Family Name: ", familyName);
+  }, [familyName]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+
+    // Create an instance of FormData
+    const formData = new FormData();
+    formData.append("packageFamilyName", familyName);
+    formData.append("version", version);
+    formData.append("zipFile", file);
+    formData.append("zipFileName", file.name);
+    formData.append("secret", isSecret);
+    formData.append("packageFamilyID", packageFamilyId);
+
     try {
-      const response = await axios.post('/api_update_packages', {
-        file: file, 
-        zipFileName: file.name,
-        userId: 11,
-        packageFamilyName: file.name,
-        version: version,
-        packageFamilyID: 6
+      const token = sessionStorage.getItem("authToken");
+      console.log("token: " + token);
+      // console.log("token: " + token)
+      const response = await axios.post("/api_update_packages", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      console.log(response.data);
+      // console.log(response.data);
 
       if (response.data.success) {
-        console.log('Package update successful');
+        alert("Package update successful");
+        console.log("Package update successful");
+        navigate("/");
       } else {
-        console.log('Package update failed');
+        alert("Package update failed: " + response.data.message);
+        console.log("Package update failed", response.data.message);
       }
     } catch (error) {
-      console.error('An error occurred:', error);
+      alert("Package update failed: " + error);
+      console.error(
+        "An error occurred:",
+        error.response ? error.response.data : error
+      );
+
     }
+    // try {
+    //   const response = await axios.post('/api_update_packages', {
+    //     file: file, 
+    //     zipFileName: file.name,
+    //     userId: 11,
+    //     packageFamilyName: file.name,
+    //     version: version,
+    //     packageFamilyID: 6
+    //   });
+    //   console.log("Fam Id", packageFamilyId)
+    //   console.log(response.data);
+
+    //   if (response.data.success) {
+    //     console.log('Package update successful');
+    //   } else {
+    //     console.log('Package update failed');
+    //   }
+    // } catch (error) {
+    //   console.error('An error occurred:', error);
+    // }
   };
 
   return (
     <div className="m-10 flex">
       <div className="flex-1 pr-5">
-        <h1 className="text-2xl font-bold mb-4">NodeJS package</h1>
+        <h1 className="text-2xl font-bold mb-4">{familyName.length > 0 ? familyName[0].package_family_name : 'Loading...'}</h1>
         <p className="mb-6">Package Description</p>
 
         <p className="font-semibold mb-2">
@@ -70,13 +166,26 @@ const UpdatePackage = () => {
           </button>
         </Link>
       </div>
-      <div className="flex-1 pl-5 border-l">
-        <h2 className="text-xl font-bold mb-4">Previous versions</h2>
-        <ul className="bg-gray-100 p-4 rounded">
-          <li className="mb-2">1.10</li>
-          <li>2.10</li>
-        </ul>
-      </div>
+      {<div className="flex-1 pl-5 border-l">
+    <h2 className="text-xl font-bold mb-4">Previous versions</h2>
+    <ul className="bg-gray-100 p-4 rounded">
+        {packages.map((v, index) => (
+            <li 
+                key={index} 
+                className={`flex justify-between items-center ${index !== packages.length - 1 ? "mb-2" : ""}`}
+            >
+                <span>{v.version}</span> {/* Display version here */}
+                <a 
+                    href={v.zipped_file} 
+                    download
+                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                >
+                    Download ZIP
+                </a>
+            </li>
+        ))}
+    </ul>
+</div>}
     </div>
   );
 };

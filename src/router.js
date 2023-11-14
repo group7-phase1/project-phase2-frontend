@@ -26,7 +26,7 @@ const Router = () => {
         <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
         <Route path="/create-package" element={<PrivateRoute><CreatePackage /></PrivateRoute>} />
         <Route path="/multiple-upload" element={<PrivateRoute><MultipleUpload /></PrivateRoute>} />
-        <Route path="/update-package" element={<PrivateRoute><UpdatePackage /></PrivateRoute>} />
+        <Route path="/update-package/:packageFamilyId" element={<PrivateRoute><UpdatePackage /></PrivateRoute>} />
         <Route path="/package-details/:packageFamilyId" element={<PrivateRoute><PackageDetail /></PrivateRoute>} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
