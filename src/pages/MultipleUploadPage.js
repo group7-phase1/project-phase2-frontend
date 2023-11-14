@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Import Axios
+import { useNavigate } from "react-router-dom";
 
 const MultipleUpload = () => {
-  const [packages, setPackages] = useState([{ name: '', version: '', file: null, isSecret: false, userID: 1 }]);
-
+  const [packages, setPackages] = useState([{ name: '', version: '', file: null, isSecret: false}]);
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("All Packages", packages);
     try {
       for (let i = 0; i < packages.length; i++) {
-        const packageData = packages[i];
-        const response = await sendPackage(packageData);
+        const formData = new FormData();
+        formData.append("packageFamilyName", packages[i].name);
+        formData.append("version", packages[i].version);
+        formData.append("zipFile", packages[i].file);
+        formData.append("zipFileName", packages[i].file.name);
+        formData.append("secret", packages[i].isSecret);
+        console.log("packages", packages[i]);
+        console.log("Form", formData);
+
+        const response = await sendPackage(formData);
         if (response.data.success) {
          
           console.log(`Package ${i + 1} uploaded successfully`);
@@ -25,9 +35,15 @@ const MultipleUpload = () => {
   
   const sendPackage = async (packageData) => {
     try {
-      // Make an Axios POST request to your API endpoint for each package
-      const response = await axios.post('/api_upload', packageData);
-      return response;
+      const token = sessionStorage.getItem("authToken");
+      console.log("token: " + token);
+      // console.log("token: " + token)
+      const response = await axios.post("/api_create", packageData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
     } catch (error) {
       // Handle any network or server error
       return { data: { success: false, message: 'An error occurred.' } };
@@ -88,7 +104,7 @@ const MultipleUpload = () => {
                 id={`file-${idx}`}
                 onChange={(e) => {
                   const newPackages = [...packages];
-                  newPackages[idx].file = e.target.value;
+                  newPackages[idx].file = e.target.files[0];
                   setPackages(newPackages);
                 }}
                 className="mt-1 p-2 w-full border rounded-md"
