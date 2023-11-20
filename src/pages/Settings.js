@@ -9,10 +9,15 @@ function Settings() {
     
     try {
       // Make an Axios POST request to your API endpoint
-      const response = await axios.post('/api_reset', {
-        username: email, // Use the name that matches your API's request body
-        password: password,
+      const token = sessionStorage.getItem("authToken");
+      const response = await axios.post('/api_reset',{},
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
       });
+
 
       if (response.data.success) {
         // Handle a successful login (e.g., redirect to another page)

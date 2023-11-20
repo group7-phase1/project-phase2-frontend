@@ -10,12 +10,18 @@ const MultipleUpload = () => {
     console.log("All Packages", packages);
     try {
       for (let i = 0; i < packages.length; i++) {
+        console.log("Package", i + 1);
         const formData = new FormData();
         formData.append("packageFamilyName", packages[i].name);
+        console.log("packageFamilyName", packages[i].name);
         formData.append("version", packages[i].version);
+        console.log("version", packages[i].version);
         formData.append("zipFile", packages[i].file);
+        console.log("zipFile", packages[i].file);
         formData.append("zipFileName", packages[i].file.name);
+        console.log("zipFileName", packages[i].file.name);
         formData.append("secret", packages[i].isSecret);
+        console.log("secret", packages[i].isSecret);
         console.log("packages", packages[i]);
         console.log("Form", formData);
 
@@ -27,6 +33,8 @@ const MultipleUpload = () => {
           console.error(`Package ${i + 1} upload failed`);
         }
       }
+      alert("All packages uploaded successfully");
+      // navigate("/");
     } catch (error) {
       // Handle any network or server error
       console.error('An error occurred:', error);
@@ -35,8 +43,9 @@ const MultipleUpload = () => {
   
   const sendPackage = async (packageData) => {
     try {
+      console.log("packageData: " + packageData);
+      // console.log("packageData: " + packageData);
       const token = sessionStorage.getItem("authToken");
-      console.log("token: " + token);
       // console.log("token: " + token)
       const response = await axios.post("/api_create", packageData, {
         headers: {
@@ -44,6 +53,14 @@ const MultipleUpload = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      if (response.data.success) {
+        // alert("Package creation successful");
+        console.log("Package creation successful");
+        // navigate("/");
+      } else {
+        alert("Package creation failed: " + response.data.message);
+        console.log("Package creation failed", response.data.message);
+      }
     } catch (error) {
       // Handle any network or server error
       return { data: { success: false, message: 'An error occurred.' } };
