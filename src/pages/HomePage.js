@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Home = () => {
@@ -8,6 +8,7 @@ const Home = () => {
   const [filteredData, setFilteredData] = useState([]);
 
   const [packageFamilies, setPackageFamilies] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,10 +44,36 @@ const Home = () => {
   //   setFilteredData(filtered);
   // }, [searchQuery, packageFamilies]); // Dependencies
 
-  // const handleSearchInput = (e) => {
-  //   const query = e.target.value;
-  //   setSearchQuery(query);
-  // };
+  const handleReset = async () => {
+    const token = sessionStorage.getItem("authToken");
+    try {
+      const response = await fetch('/api_clear_packages', {
+        method: 'POST', // Adjust the method as needed (POST, GET, etc.)
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+          // You may need to include additional headers based on your backend requirements
+        },
+        // You can include a request body if needed
+        // body: JSON.stringify({ /* Your data here */ }),
+      });
+      if (response.ok) {
+        alert("Package deletion successful");
+        console.log("Package deletion successful");
+        window.location.reload(true);
+      } else {
+        alert("Package deletion failed: " + response.data.message);
+        console.log("Package deletion failed", response.data.message);
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+    };
+
+  const handleSearchInput = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+  };
 
   return (
     <div className="m-10">
@@ -60,6 +87,14 @@ const Home = () => {
             Logout
           </Link>
         </div>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleReset}
+            className="px-4 py-2 bg-gray-800 text-white rounded"
+          >
+            Reset
+          </button>
+        </div>
       </div>
       <div className="mb-4">
         <input
@@ -67,7 +102,7 @@ const Home = () => {
           placeholder="Search..."
           className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
           value={searchQuery}
-          // onChange={handleSearchInput}
+          //onChange={handleSearchInput}
         />
       </div>
       <table className="min-w-full bg-white border rounded">
@@ -77,7 +112,11 @@ const Home = () => {
             <th className="py-2 px-4 border-b">Net Score</th>
             <th className="py-2 px-4 border-b">Ramp up</th>
             <th className="py-2 px-4 border-b">Maintenance</th>
-            <th className="py-2 px-4 border-b">Newest Version</th>
+            <th className="py-2 px-4 border-b">Bus Factor</th>
+            <th className="py-2 px-4 border-b">Correctness</th>
+            <th className="py-2 px-4 border-b">License</th>
+            <th className="py-2 px-4 border-b">Dependency Pinning</th>
+            <th className="py-2 px-4 border-b">Code Review Coverage</th>
             <th className="py-2 px-4 border-b"></th>
           </tr>
         </thead>
@@ -93,10 +132,14 @@ const Home = () => {
             filteredData.map((item, index) => (
               <tr key={index} className="border-b hover:bg-gray-100">
                 <td className="py-2 px-4">{item.package_family_name}</td>
-                <td className="py-2 px-4">{item.netScore}</td>
-                <td className="py-2 px-4">{item.rampUp}</td>
-                <td className="py-2 px-4">{item.maintenance}</td>
-                <td className="py-2 px-4">{item.newestVersion}</td>
+                <td className="py-2 px-4">{item.net_score}</td>
+                <td className="py-2 px-4">{item.ramp_up_score}</td>
+                <td className="py-2 px-4">{item.responsive_maintainer_score}</td>
+                <td className="py-2 px-4">{item.bus_factor_score}</td>
+                <td className="py-2 px-4">{item.correctness_score}</td>
+                <td className="py-2 px-4">{item.license_score}</td>
+                <td className="py-2 px-4">{item.dependency_pinning_score}</td>
+                <td className="py-2 px-4">{item.code_review_coverage_score}</td>
                 <td className="py-2 px-4">
                   <Link
                     to={`/package-details/${item.package_family_id}`}
