@@ -7,7 +7,10 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
-  const [packageFamilies, setPackageFamilies] = useState({});
+  
+
+  const [packageFamilies, setPackageFamilies] = useState([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,7 +30,6 @@ const Home = () => {
         console.log(result);
         const data = await result.data.packageFamilies;
         setPackageFamilies(data);
-        setFilteredData(data);
         console.log("Data", data);
         
       } catch (error) {
@@ -37,12 +39,14 @@ const Home = () => {
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   const filtered = packageFamilies.filter((item) =>
-  //     item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  //   );
-  //   setFilteredData(filtered);
-  // }, [searchQuery, packageFamilies]); // Dependencies
+  useEffect(() => {
+    const updatedFilteredData = packageFamilies.filter(item =>
+      item.package_family_name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredData(updatedFilteredData);
+  }, [searchQuery, packageFamilies]); // This useEffect will run whenever searchQuery or packageFamilies changes
+  
+
 
   const handleReset = async () => {
     const token = sessionStorage.getItem("authToken");
@@ -70,10 +74,10 @@ const Home = () => {
     }
     };
 
-  const handleSearchInput = (e) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-  };
+const handleSearchInput = (event) => {
+  setSearchQuery(event.target.value);
+};
+
 
   return (
     <div className="m-10">
@@ -96,15 +100,14 @@ const Home = () => {
           </button>
         </div>
       </div>
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Search..."
-          className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-          value={searchQuery}
-          //onChange={handleSearchInput}
-        />
-      </div>
+      <input
+  type="text"
+  placeholder="Search..."
+  className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+  value={searchQuery}
+  onChange={handleSearchInput}
+/>
+
       <table className="min-w-full bg-white border rounded">
         <thead className="bg-gray-200">
           <tr>
