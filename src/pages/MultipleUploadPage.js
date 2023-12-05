@@ -54,9 +54,9 @@ const MultipleUpload = () => {
         },
       });
       if (response.data.success) {
-        // alert("Package creation successful");
+        alert("Package creation successful");
         console.log("Package creation successful");
-        // navigate("/");
+        navigate("/");
       } else {
         alert("Package creation failed: " + response.data.message);
         console.log("Package creation failed", response.data.message);

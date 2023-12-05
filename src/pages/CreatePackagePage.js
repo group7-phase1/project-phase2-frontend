@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 const CreatePackage = () => {
   const [name, setName] = useState("");
   const [version, setVersion] = useState("");
@@ -123,6 +123,12 @@ const CreatePackage = () => {
         >
           Create new package
         </button>
+        <Link
+            to="/multiple-upload"
+            className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
+            >
+            Upload Multiple Packages at Once
+          </Link>
       </form>
     </div>
   );
