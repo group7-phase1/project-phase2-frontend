@@ -2,6 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';  // Importing Link to navigate to Update page
 import axios from 'axios'; // Add this line to import Axios
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  alert("Delete Packages");
+}
 const PackageDetails = () => {
     //const [packageName, setPackageName] = useState('');
     //const [packageDescription, setPackageDescription] = useState('');
@@ -19,7 +24,6 @@ const PackageDetails = () => {
     useEffect(() => {
         const fetchData = async () => {
           const token = sessionStorage.getItem("authToken");
-          const send = 6;
           try {
             const result = await axios.post(
               "/api_get_package_details",
@@ -90,6 +94,12 @@ const PackageDetails = () => {
                 </Link>
             </div>
             {<div className="flex-1 pl-5 border-l">
+            <button
+          type="submit"
+          className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
+        >
+          Delete all Packages
+        </button>
     <h2 className="text-xl font-bold mb-4">Previous versions</h2>
     <ul className="bg-gray-100 p-4 rounded">
         {packages.map((v, index) => (
