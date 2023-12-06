@@ -1,13 +1,41 @@
 // pages/PackageDetails.js
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';  // Importing Link to navigate to Update page
+import { Link, Navigate, useParams } from 'react-router-dom';  // Importing Link to navigate to Update page
 import axios from 'axios'; // Add this line to import Axios
+import { useNavigate } from "react-router-dom";
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  alert("Delete Packages");
-}
 const PackageDetails = () => {
+  const navigate = useNavigate();
+  const deleteSubmit = async (familyName) => {
+    try {
+      // Make an Axios POST request to your API endpoint
+      const token = sessionStorage.getItem("authToken");
+      const response = await axios.post('/api_delete_package_byName', {
+        data: {
+          familyName: familyName,
+        },
+      }, {
+        headers: {
+          "Content-Type": "application/json", // Correct header for JSON
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+  
+      if (response.data.success) {
+        // Handle a successful login (e.g., redirect to another page)
+        console.log('Packages Deleted successfully');
+        alert("Packages Deleted of this Name");
+        navigate('/');
+      } else {
+        // Handle a failed login (e.g., show an error message)
+        console.log('Deleting Account failed');
+      }
+    } catch (error) {
+      // Handle any network or server error
+      console.error('An error occurred:', error);
+    }
+  };
     //const [packageName, setPackageName] = useState('');
     //const [packageDescription, setPackageDescription] = useState('');
     const [packages, setPackages] = useState([]);
@@ -95,10 +123,11 @@ const PackageDetails = () => {
             </div>
             {<div className="flex-1 pl-5 border-l">
             <button
-          type="submit"
-          className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
+            type="button"
+            onClick={() => deleteSubmit(familyName.length > 0 ? familyName[0].package_family_name : '')}
+            className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
         >
-          Delete all Packages
+          Delete all Versions
         </button>
     <h2 className="text-xl font-bold mb-4">Previous versions</h2>
     <ul className="bg-gray-100 p-4 rounded">
