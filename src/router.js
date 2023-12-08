@@ -8,6 +8,8 @@ import PackageDetail from "./pages/PackageDetailsPage";
 import SignUp from "./pages/SignUp";
 import Settings from "./pages/Settings";
 
+import Autograde from "./pages/AutogradePage";
+
 import Login from "./pages/LoginPage";
 import Logout from './pages/LogoutPage';
 
@@ -32,6 +34,7 @@ const Router = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/autograde" element={<Autograde />} />
       </Routes>
     </BrowserRouter>
   );
