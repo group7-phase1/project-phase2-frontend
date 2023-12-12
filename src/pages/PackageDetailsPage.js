@@ -1,4 +1,4 @@
-// pages/PackageDetails.js
+// pages/PackageDetails.js Package Details
 import React, { useState, useEffect } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';  // Importing Link to navigate to Update page
 import axios from 'axios'; // Add this line to import Axios
